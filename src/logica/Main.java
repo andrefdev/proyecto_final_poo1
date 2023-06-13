@@ -14,7 +14,7 @@ public class Main {
         // Tema oscuro
         FlatDarkLaf.setup();
 
-        // Almacen (almacena todos los productos)
+        // Almacen (almacena todos los productoss)
         Almacen almacen = new Almacen();
 
         BaseDeDatos db = new BaseDeDatos();
@@ -40,14 +40,12 @@ public class Main {
                         framePrincipal.repaint();
                     }
                 });
-
                 productos.setButtonClickListener(new ButtonClickListener() {
                     @Override
                     public void onButtonClick() {
                         String categoria = productos.getTextField();
-                        productos.setModel(almacen.mostrarProductosPorCategoria(categoria));
-                        //Productos productosSorteados = new Productos(almacen.mostrarProductosPorCategoria(categoria));
-                        framePrincipal.setContentPane(productos);
+                        DefaultTableModel modelo = almacen.mostrarProductosPorCategoria(categoria);
+                        productos.actualizarModelo(modelo);
                         framePrincipal.revalidate();
                         framePrincipal.repaint();
                     }

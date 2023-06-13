@@ -1,5 +1,6 @@
 package persistencia;
 
+import com.sun.jdi.PrimitiveValue;
 import logica.Cliente;
 import logica.Empleado;
 import logica.Pedido;
@@ -20,6 +21,7 @@ public class BaseDeDatos {
     private List<Producto> productos = new ArrayList<>();
     private List<Cliente> clientes = new ArrayList<>();
     private List<Pedido> pedidos = new ArrayList<>();
+    private List<Producto> productosTemp = new ArrayList<Producto>();
     private final String url ="jdbc:postgresql://db.byuiftitpxymesjwshot.supabase.co:5432/postgres?user=postgres&password=Loco23230211!";
     //private final Pattern patronDNI = Pattern.compile("^[0-9]{8}$");
     public List<Empleado> getEmpleados(){
@@ -77,6 +79,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarEmpleados() {
+        empleados.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -104,6 +107,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarClientes() {
+        clientes.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -130,6 +134,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarProductos() {
+        productos.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -160,6 +165,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarPedidos() {
+        pedidos.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -272,28 +278,19 @@ public class BaseDeDatos {
         return false;
     }
     public List<Producto> obtenerProductosPorCategoria(String categoria) {
-        System.out.println(categoria);
-        List<Producto> productosTemp = new ArrayList<Producto>();
+        productosTemp.clear();
         actualizarProductos();
         for (Producto producto : productos)
         {
             ArrayList<String> cat = producto.getCategorias();
-            Iterator<String> categorias = cat.iterator();
-            while(categorias.hasNext()){
-                if (categorias.next().equals(categoria)){
+            for (String s : cat) {
+                if (s.equals(categoria)) {
                     productosTemp.add(producto);
                 }
             }
-            /*for (String cate: cat
-                 ) {
-                if(cate.equals(categoria)){
-                    productosTemp.add(producto);
-                }
-            }*/
         }
         return productosTemp;
     }
-
     public void eliminarEmpleado(int dni) {
         Connection connection = null;
         PreparedStatement statement = null;
