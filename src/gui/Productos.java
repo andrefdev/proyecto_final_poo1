@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -40,14 +41,20 @@ public class Productos extends JPanel {
     private void button1MouseClicked(MouseEvent e) {
         this.text = textField1.getText();
         System.out.println(text);
-        //textField1.setText("");
     }
     public String getTextField(){
         return textField1.getText();
     }
     public void setModel(DefaultTableModel model) {
         this.productosTableModel = model;
+        revalidate();
+        repaint();
     }
+    public void actualizarModelo(DefaultTableModel nuevoModelo) {
+        productosTableModel = nuevoModelo;
+        table1.setModel(productosTableModel);
+    }
+
     public String getText() {
         return text;
     }

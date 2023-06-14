@@ -4,12 +4,11 @@ import persistencia.BaseDeDatos;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Almacen {
     private List<Producto> productos;
+    private  List<Producto> productosSorteados = new ArrayList<>();
     BaseDeDatos db = new BaseDeDatos();
     public Almacen() {
     }
@@ -33,17 +32,18 @@ public class Almacen {
         return model;
     }
     public DefaultTableModel mostrarProductosPorCategoria(String categoria){
-        productos = db.obtenerProductosPorCategoria(categoria);
+        System.out.println(db.obtenerProductosPorCategoria(categoria));
         DefaultTableModel model = new DefaultTableModel();
+        productosSorteados = db.obtenerProductosPorCategoria(categoria);
+
         model.addColumn("Código");
         model.addColumn("Categoria");
         model.addColumn("Marca");
         model.addColumn("Modelo");
         model.addColumn("Precio");
 
-        for (Producto producto : productos
+        for (Producto producto : productosSorteados
         ) {
-            System.out.println(producto);
             String precio = String.valueOf(producto.getPrecio());
             String codigo = String.valueOf(producto.getCodigo());
             System.out.println(producto.toString());

@@ -4,7 +4,7 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "default, labelcompgap, default, labelcompgap, max(default;200dlu), labelcompgap, default"
+			"$columnSpecs": "default, labelcompgap, default, labelcompgap, max(default;200dlu), labelcompgap, default, labelcompgap, default"
 			"$rowSpecs": "default, linegap, default, linegap, max(default;15dlu), linegap, max(default;30dlu), linegap, default, linegap, default, linegap, max(default;15dlu), linegap, max(default;30dlu), linegap, default, linegap, max(default;30dlu), linegap, default, linegap, default, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
@@ -18,7 +18,6 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 				"gridY": 5
-				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField1"
@@ -26,7 +25,6 @@ new FormModel {
 				"gridX": 5
 				"gridY": 7
 				"gridHeight": 2
-				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
@@ -35,7 +33,6 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 				"gridY": 13
-				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JPasswordField" ) {
 				name: "passwordField1"
@@ -43,7 +40,6 @@ new FormModel {
 				"gridX": 5
 				"gridY": 15
 				"gridHeight": 2
-				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "botonLogin"
@@ -54,7 +50,6 @@ new FormModel {
 				"gridY": 19
 				"gridX": 5
 				"gridHeight": 2
-				"gridWidth": 3
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 26, 6 )

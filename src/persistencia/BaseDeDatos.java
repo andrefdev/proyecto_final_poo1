@@ -1,9 +1,7 @@
 package persistencia;
 
-import logica.Cliente;
-import logica.Empleado;
-import logica.Pedido;
-import logica.Producto;
+import com.sun.jdi.PrimitiveValue;
+import logica.*;
 
 import javax.swing.*;
 import java.sql.*;
@@ -17,9 +15,11 @@ import java.util.Iterator.*;
 
 public class BaseDeDatos {
     private List<Empleado> empleados = new ArrayList<>();
+    private List<Gerente> gerentes = new ArrayList<>();
     private List<Producto> productos = new ArrayList<>();
     private List<Cliente> clientes = new ArrayList<>();
     private List<Pedido> pedidos = new ArrayList<>();
+    private List<Producto> productosTemp = new ArrayList<Producto>();
     private final String url ="jdbc:postgresql://db.byuiftitpxymesjwshot.supabase.co:5432/postgres?user=postgres&password=Loco23230211!";
     //private final Pattern patronDNI = Pattern.compile("^[0-9]{8}$");
     public List<Empleado> getEmpleados(){
@@ -77,6 +77,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarEmpleados() {
+        empleados.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -103,7 +104,36 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
+    private void actualizarGerentes() {
+        gerentes.clear();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DriverManager.getConnection(url);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("select * from gerentes");
+
+            while (resultSet.next()) { // will traverse through all rows
+                Integer dni = resultSet.getInt("dni");
+                String nombre = resultSet.getString("nombre");
+                Integer sueldo = resultSet.getInt("sueldo");
+                Integer ruc = resultSet.getInt("ruc");
+                Date fechaTemporal = resultSet.getDate("fecha_nacimiento");
+                LocalDate fechaNacimiento = fechaTemporal.toLocalDate();
+
+                Gerente gerente = new Gerente(dni, nombre, sueldo, ruc, fechaNacimiento);
+                gerentes.add(gerente);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+    }
     private void actualizarClientes() {
+        clientes.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -130,6 +160,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarProductos() {
+        productos.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -160,6 +191,7 @@ public class BaseDeDatos {
         }
     }
     private void actualizarPedidos() {
+        pedidos.clear();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -197,6 +229,16 @@ public class BaseDeDatos {
         ) {
             if (empleado.getDni() == dni) {
                 return empleado;
+            }
+        }
+        return null;
+    }
+    public Gerente buscarGerente(int dni) {
+        actualizarGerentes();
+        for (Gerente gerente : gerentes
+        ) {
+            if (gerente.getDni() == dni) {
+                return gerente;
             }
         }
         return null;
@@ -241,6 +283,16 @@ public class BaseDeDatos {
         }
         return false;
     }
+    public boolean existeGerente(int dni) {
+        actualizarGerentes();
+        for (Gerente gerente : gerentes
+        ) {
+            if (gerente.getDni() == dni) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean existeProducto(int cod) {
         actualizarProductos();
         for (Producto producto : productos
@@ -272,28 +324,22 @@ public class BaseDeDatos {
         return false;
     }
     public List<Producto> obtenerProductosPorCategoria(String categoria) {
-        System.out.println(categoria);
-        List<Producto> productosTemp = new ArrayList<Producto>();
+        productosTemp.clear();
         actualizarProductos();
+        if(categoria.equals("")){
+            return productos;
+        }
         for (Producto producto : productos)
         {
             ArrayList<String> cat = producto.getCategorias();
-            Iterator<String> categorias = cat.iterator();
-            while(categorias.hasNext()){
-                if (categorias.next().equals(categoria)){
+            for (String s : cat) {
+                if (s.equals(categoria)) {
                     productosTemp.add(producto);
                 }
             }
-            /*for (String cate: cat
-                 ) {
-                if(cate.equals(categoria)){
-                    productosTemp.add(producto);
-                }
-            }*/
         }
         return productosTemp;
     }
-
     public void eliminarEmpleado(int dni) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -388,6 +434,29 @@ public class BaseDeDatos {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
             statement = connection.prepareStatement("INSERT INTO empleados(dni, nombre, sueldo, ruc, fecha_nacimiento) VALUES (?,?,?,?,?)");
+
+            statement.setLong(1,dni);
+            statement.setString(2,nombre);
+            statement.setInt(3,sueldo);
+            statement.setInt(4,ruc);
+            statement.setDate(5, fechaNacimiento);
+
+            statement.executeUpdate();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+    }
+    public void agregarGerente(Long dni, String nombre, int sueldo, int ruc, Date fechaNacimiento) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url);
+            statement = connection.prepareStatement("INSERT INTO gerentes(dni, nombre, sueldo, ruc, fecha_nacimiento) VALUES (?,?,?,?,?)");
 
             statement.setLong(1,dni);
             statement.setString(2,nombre);

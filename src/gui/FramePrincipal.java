@@ -9,6 +9,8 @@ import com.jgoodies.forms.layout.*;
 
 import java.awt.*;
 
+import static javax.swing.Box.createVerticalGlue;
+
 /**
  * @author andre
  */
@@ -23,16 +25,10 @@ public class FramePrincipal extends JFrame {
 
         //======== this ========
         var contentPane = getContentPane();
-        contentPane.setLayout(new FormLayout(
-            "default, $lcgap, default",
-            "2*(default, $lgap), default"));
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
         pack();
         setLocationRelativeTo(getOwner());
-        setMinimumSize(new Dimension(400,400));
-        setResizable(true);
-
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        createVerticalGlue();
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 

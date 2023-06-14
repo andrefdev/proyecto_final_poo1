@@ -6,7 +6,9 @@ import persistencia.BaseDeDatos;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Main {
@@ -14,7 +16,7 @@ public class Main {
         // Tema oscuro
         FlatDarkLaf.setup();
 
-        // Almacen (almacena todos los productos)
+        // Almacen (almacena todos los productoss)
         Almacen almacen = new Almacen();
 
         BaseDeDatos db = new BaseDeDatos();
@@ -24,30 +26,54 @@ public class Main {
             public void run() {
                 // Frame principal
                 FramePrincipal framePrincipal = new FramePrincipal();
-
                 // Paneles
                 Login login = new Login();
                 DefaultTableModel model = almacen.mostrarProductos();
                 Productos productos = new Productos(model);
-                //almacen.setCategoria(categoria);
+                MenuGerente menuGerente = new MenuGerente();
                 AnadirProducto anadirProducto = new AnadirProducto();
-
                 login.setButtonClickListener(new ButtonClickListener() {
                     @Override
                     public void onButtonClick() {
-                        framePrincipal.setContentPane(productos);
-                        framePrincipal.revalidate();
-                        framePrincipal.repaint();
+                        System.out.println(login.getTxtFieldUsuario());
+                        System.out.println(login.getPasswordField());
+                        int dni = 0;
+                        try {
+                            dni = Integer.parseInt(login.getTxtFieldUsuario());
+                        }catch (NumberFormatException e){
+                            e.printStackTrace();
+                        }
+                        if(db.existeEmpleado(dni)){
+                            framePrincipal.setContentPane(productos);
+                            framePrincipal.revalidate();
+                            framePrincipal.repaint();
+                        }else if(db.existeGerente(dni)){
+                            framePrincipal.setContentPane(menuGerente);
+                            framePrincipal.revalidate();
+                            framePrincipal.repaint();
+                            anadirProducto.setButtonClickListener(new ButtonClickListener() {
+                                @Override
+                                public void onButtonClick() {
+                                    int codigo = Integer.parseInt(anadirProducto.getTxtCodigo());
+                                    String marca = anadirProducto.getTxtMarca();
+                                    String modelo = anadirProducto.getTxtModelo();
+                                    int precio = Integer.parseInt(anadirProducto.getTxtPrecio());
+                                    String categoriasString = anadirProducto.getTxtCategorias();
+                                    ArrayList<String> arrayCategorias = new ArrayList<>(Arrays.asList(categoriasString.split(",")));
+                                    almacen.anadirProducto(arrayCategorias, marca, modelo, precio, codigo);
+                                    JOptionPane.showMessageDialog(anadirProducto, "producto agregado exitosamente");
+                                    anadirProducto.resetTextFields();
+                                }
+                            });
+                        }
                     }
                 });
-
                 productos.setButtonClickListener(new ButtonClickListener() {
                     @Override
                     public void onButtonClick() {
                         String categoria = productos.getTextField();
-                        productos.setModel(almacen.mostrarProductosPorCategoria(categoria));
-                        //Productos productosSorteados = new Productos(almacen.mostrarProductosPorCategoria(categoria));
-                        framePrincipal.setContentPane(productos);
+                        DefaultTableModel modelo = almacen.mostrarProductosPorCategoria(categoria);
+                        productos.actualizarModelo(modelo);
                         framePrincipal.revalidate();
                         framePrincipal.repaint();
                     }
@@ -58,7 +84,5 @@ public class Main {
                 framePrincipal.setLocationRelativeTo(null);
             }
         });
-
-
     }
 }
