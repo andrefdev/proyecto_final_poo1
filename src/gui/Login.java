@@ -6,6 +6,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -16,6 +17,9 @@ import logica.ButtonClickListener;
  */
 public class Login extends JPanel {
     private boolean logueado;
+    private String txtFieldUsuario;
+    private String txtFieldContrasena;
+
     private ButtonClickListener buttonClickListener;
 
     public Login() {
@@ -29,6 +33,14 @@ public class Login extends JPanel {
                 }
             }
         });
+    }
+    public String getTxtFieldUsuario(){
+        this.txtFieldUsuario = textField1.getText();
+        return txtFieldUsuario;
+    }
+    public String getPasswordField(){
+        this.txtFieldContrasena = Arrays.toString(passwordField1.getPassword());
+        return txtFieldContrasena;
     }
     private void botonLoginMouseClicked(MouseEvent e) {
         setLogueado(true);
@@ -52,27 +64,28 @@ public class Login extends JPanel {
         setMinimumSize(new Dimension(300, 300));
         setFont(new Font("Inter", Font.PLAIN, 18));
         setPreferredSize(null);
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
-        .EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax
-        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,
-        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
-        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing
+        .border.EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder
+        .CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.
+        awt.Font.BOLD,12),java.awt.Color.red), getBorder()))
+        ; addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
+        ){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException();}})
+        ;
         setLayout(new FormLayout(
-            "2*(default, $lcgap), [200dlu,default], $lcgap, default",
+            "2*(default, $lcgap), [200dlu,default], 2*($lcgap, default)",
             "2*(default, $lgap), [15dlu,default], $lgap, [30dlu,default], 2*($lgap, default), $lgap, [15dlu,default], $lgap, [30dlu,default], $lgap, default, $lgap, [30dlu,default], 5*($lgap, default)"));
 
         //---- label1 ----
         label1.setText("Usuario");
         label1.setFont(new Font("Inter", Font.PLAIN, 18));
-        add(label1, CC.xywh(5, 5, 3, 1));
-        add(textField1, CC.xywh(5, 7, 3, 2));
+        add(label1, CC.xy(5, 5));
+        add(textField1, CC.xywh(5, 7, 1, 2));
 
         //---- label2 ----
         label2.setText("Contrase\u00f1a");
         label2.setFont(new Font("Inter", Font.PLAIN, 18));
-        add(label2, CC.xywh(5, 13, 3, 1));
-        add(passwordField1, CC.xywh(5, 15, 3, 2));
+        add(label2, CC.xy(5, 13));
+        add(passwordField1, CC.xywh(5, 15, 1, 2));
 
         //---- botonLogin ----
         botonLogin.setText("Ingresar");
@@ -83,7 +96,7 @@ public class Login extends JPanel {
                 botonLoginMouseClicked(e);
             }
         });
-        add(botonLogin, CC.xywh(5, 19, 3, 2));
+        add(botonLogin, CC.xywh(5, 19, 1, 2));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
     public void setButtonClickListener(ButtonClickListener listener) {

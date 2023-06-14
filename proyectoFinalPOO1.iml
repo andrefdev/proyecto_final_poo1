@@ -10,5 +10,6 @@
     <orderEntry type="library" name="JGoodies Forms" level="project" />
     <orderEntry type="library" name="flatlaf" level="project" />
     <orderEntry type="library" name="postgresql" level="application" />
+    <orderEntry type="library" name="MigLayout" level="project" />
   </component>
 </module>
