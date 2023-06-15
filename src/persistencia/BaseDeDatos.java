@@ -33,6 +33,12 @@ public class BaseDeDatos {
         Matcher matcher = patronDNI.matcher(dni);
         return matcher.matches();
     }
+    public boolean validarRuc(String ruc) {
+        String regex = "^[0-9]{8}$";
+        Pattern patronDNI = Pattern.compile(regex);
+        Matcher matcher = patronDNI.matcher(ruc);
+        return matcher.matches();
+    }
     public boolean validarFecha(String fecha) {
         String regex = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$";
         Pattern patronFecha = Pattern.compile(regex);
@@ -462,19 +468,28 @@ public class BaseDeDatos {
     public void agregarGerente(Long dni, String nombre, int sueldo, int ruc, Date fechaNacimiento) {
         Connection connection = null;
         PreparedStatement statement = null;
+        PreparedStatement statement2 =null;
         ResultSet resultSet = null;
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-            statement = connection.prepareStatement("INSERT INTO gerentes(dni, nombre, sueldo, ruc, fecha_nacimiento) VALUES (?,?,?,?,?)");
-
-            statement.setLong(1,dni);
-            statement.setString(2,nombre);
-            statement.setInt(3,sueldo);
-            statement.setInt(4,ruc);
-            statement.setDate(5, fechaNacimiento);
-
-            statement.executeUpdate();
+            if(validarDni(String.valueOf(dni)) && validarRuc(String.valueOf(ruc))) {
+                statement = connection.prepareStatement("INSERT INTO gerentes(dni, nombre, sueldo, ruc, fecha_nacimiento) VALUES (?,?,?,?,?)");
+                statement.setLong(1, dni);
+                statement.setString(2, nombre);
+                statement.setInt(3, sueldo);
+                statement.setInt(4, ruc);
+                statement.setDate(5, fechaNacimiento);
+                statement.executeUpdate();
+                statement2 = connection.prepareStatement("INSERT INTO credenciales(usuario, contrasena, credencial_id_gerente) VALUES (?,?,?)");
+                statement2.setString(1, nombre + "." + ruc);
+                statement2.setString(2, Long.toString(dni));
+                statement2.setLong(3, dni);
+                statement2.executeUpdate();
+                statement2.close();
+            }else{
+                JOptionPane.showMessageDialog(null, "Dni o ruc incorrecto");
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -490,15 +505,18 @@ public class BaseDeDatos {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-            statement = connection.prepareStatement("INSERT INTO productos(codigo, precio, marca, categorias, modelo) VALUES (?,?,?,?,?)");
-            statement.setInt(1,codigo);
-            statement.setInt(2,precio);
-            statement.setString(3,marca);
-            Array categoriasArray = connection.createArrayOf("VARCHAR", catArray);
-            statement.setArray(4, categoriasArray);
-            statement.setString(5, modelo);
-
-            statement.executeUpdate();
+            if(validarCodigo(String.valueOf(codigo)) && validarPrecio(String.valueOf(precio))) {
+                statement = connection.prepareStatement("INSERT INTO productos(codigo, precio, marca, categorias, modelo) VALUES (?,?,?,?,?)");
+                statement.setInt(1, codigo);
+                statement.setInt(2, precio);
+                statement.setString(3, marca);
+                Array categoriasArray = connection.createArrayOf("VARCHAR", catArray);
+                statement.setArray(4, categoriasArray);
+                statement.setString(5, modelo);
+                statement.executeUpdate();
+            }else{
+                JOptionPane.showMessageDialog(null, "codigo o precio incorrecto");
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -513,15 +531,17 @@ public class BaseDeDatos {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-            statement = connection.prepareStatement("INSERT INTO clientes(dni, nombre, fecha_nacimiento, direccion ) VALUES (?,?,?,?)");
+            if(validarDni(String.valueOf(dni))) {
+                statement = connection.prepareStatement("INSERT INTO clientes(dni, nombre, fecha_nacimiento, direccion ) VALUES (?,?,?,?)");
 
-            statement.setInt(1,dni);
-            statement.setString(2,nombre);
-            statement.setDate(3, fechaNacimiento);
-            statement.setString(4,direccion);
-
-
-            statement.executeUpdate();
+                statement.setInt(1, dni);
+                statement.setString(2, nombre);
+                statement.setDate(3, fechaNacimiento);
+                statement.setString(4, direccion);
+                statement.executeUpdate();
+            }else{
+                JOptionPane.showMessageDialog(null, "Dni incorrecto");
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -537,14 +557,16 @@ public class BaseDeDatos {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-            statement = connection.prepareStatement("INSERT INTO productos(codigo, productos , precio, cliente) VALUES (?,?,?,?)");
-
-            statement.setInt(1,codigo);
-            statement.setArray(2, productosArray);
-            statement.setInt(3,precio);
-            statement.setString(4, cliente.toString());
-
-            statement.executeUpdate();
+            if(validarCodigo(String.valueOf(codigo)) && validarPrecio(String.valueOf(precio))) {
+                statement = connection.prepareStatement("INSERT INTO productos(codigo, productos , precio, cliente) VALUES (?,?,?,?)");
+                statement.setInt(1, codigo);
+                statement.setArray(2, productosArray);
+                statement.setInt(3, precio);
+                statement.setString(4, cliente.toString());
+                statement.executeUpdate();
+            }else{
+                JOptionPane.showMessageDialog(null, "codigo o precio incorrecto");
+            }
         }
         catch (Exception e){
             e.printStackTrace();
