@@ -15,7 +15,12 @@ public class Almacen {
     }
     public DefaultTableModel mostrarProductos(){
         productos = db.obtenerProductos();
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel(){
+            public boolean isCellEditable(int filas, int columnas){
+                return false;
+            }
+
+        };
         model.addColumn("Código");
         model.addColumn("Categoria");
         model.addColumn("Marca");
@@ -40,6 +45,9 @@ public class Almacen {
                     return Boolean.class; // Establecer la clase de la columna "Seleccionar" como Boolean para que se muestre el checkbox
                 }
                 return super.getColumnClass(columnIndex);
+            }
+            public boolean isCellEditable(int filas, int columnas){
+                return false;
             }
         };
         productosSorteados = db.obtenerProductosPorCategoria(categoria);
