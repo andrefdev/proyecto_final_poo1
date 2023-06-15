@@ -12,6 +12,8 @@ import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import logica.ButtonClickListener;
 
+import static javax.swing.Box.*;
+
 /**
  * @author andre
  */
@@ -39,7 +41,7 @@ public class Login extends JPanel {
         return txtFieldUsuario;
     }
     public String getPasswordField(){
-        this.txtFieldContrasena = Arrays.toString(passwordField1.getPassword());
+        this.txtFieldContrasena = passwordTextField.getText();
         return txtFieldContrasena;
     }
     private void botonLoginMouseClicked(MouseEvent e) {
@@ -53,39 +55,48 @@ public class Login extends JPanel {
     }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - André Forsyth
+        // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
         label1 = new JLabel();
         textField1 = new JTextField();
+        vSpacer2 = new JPanel(null);
         label2 = new JLabel();
-        passwordField1 = new JPasswordField();
+        passwordTextField = new JPasswordField();
+        vSpacer1 = new JPanel(null);
+        separator1 = new JSeparator();
         botonLogin = new JButton();
 
         //======== this ========
         setMinimumSize(new Dimension(300, 300));
         setFont(new Font("Inter", Font.PLAIN, 18));
-        setPreferredSize(null);
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing
-        .border.EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder
-        .CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.
-        awt.Font.BOLD,12),java.awt.Color.red), getBorder()))
-        ; addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
-        ){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException();}})
-        ;
-        setLayout(new FormLayout(
-            "2*(default, $lcgap), [200dlu,default], 2*($lcgap, default)",
-            "2*(default, $lgap), [15dlu,default], $lgap, [30dlu,default], 2*($lgap, default), $lgap, [15dlu,default], $lgap, [30dlu,default], $lgap, default, $lgap, [30dlu,default], 5*($lgap, default)"));
+        setPreferredSize(new Dimension(500, 500));
+        setLayout(new GridLayout(8, 5));
 
         //---- label1 ----
         label1.setText("Usuario");
         label1.setFont(new Font("Inter", Font.PLAIN, 18));
-        add(label1, CC.xy(5, 5));
-        add(textField1, CC.xywh(5, 7, 1, 2));
+        label1.setHorizontalAlignment(SwingConstants.LEFT);
+        label1.setPreferredSize(new Dimension(64, 23));
+        label1.setHorizontalTextPosition(SwingConstants.LEADING);
+        add(label1);
+        add(textField1);
+
+        //---- vSpacer2 ----
+        vSpacer2.setPreferredSize(new Dimension(10, 100));
+        add(vSpacer2);
 
         //---- label2 ----
         label2.setText("Contrase\u00f1a");
         label2.setFont(new Font("Inter", Font.PLAIN, 18));
-        add(label2, CC.xy(5, 13));
-        add(passwordField1, CC.xywh(5, 15, 1, 2));
+        label2.setHorizontalAlignment(SwingConstants.LEFT);
+        add(label2);
+        add(passwordTextField);
+
+        //---- vSpacer1 ----
+        vSpacer1.setMinimumSize(new Dimension(12, 100));
+        vSpacer1.setRequestFocusEnabled(false);
+        vSpacer1.setPreferredSize(new Dimension(10, 100));
+        add(vSpacer1);
+        add(separator1);
 
         //---- botonLogin ----
         botonLogin.setText("Ingresar");
@@ -96,7 +107,7 @@ public class Login extends JPanel {
                 botonLoginMouseClicked(e);
             }
         });
-        add(botonLogin, CC.xywh(5, 19, 1, 2));
+        add(botonLogin);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
     public void setButtonClickListener(ButtonClickListener listener) {
@@ -104,11 +115,14 @@ public class Login extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - André Forsyth
+    // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
     private JLabel label1;
     private JTextField textField1;
+    private JPanel vSpacer2;
     private JLabel label2;
-    private JPasswordField passwordField1;
+    private JTextField passwordTextField;
+    private JPanel vSpacer1;
+    private JSeparator separator1;
     private JButton botonLogin;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

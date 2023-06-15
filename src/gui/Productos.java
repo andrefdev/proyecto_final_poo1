@@ -23,6 +23,7 @@ import java.util.List;
 public class Productos extends JPanel {
     private DefaultTableModel productosTableModel;
     private ButtonClickListener buttonClickListener;
+    private ButtonClickListener buttonClickListenerRegresar;
     private String text = "";
     public Productos(DefaultTableModel model) {
         this.productosTableModel = model;
@@ -36,6 +37,14 @@ public class Productos extends JPanel {
                 }
             }
         });
+        botonRegresar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerRegresar != null) {
+                    buttonClickListenerRegresar.onButtonClick();
+                }
+            }
+        });
     }
 
     private void button1MouseClicked(MouseEvent e) {
@@ -45,11 +54,7 @@ public class Productos extends JPanel {
     public String getTextField(){
         return textField1.getText();
     }
-    public void setModel(DefaultTableModel model) {
-        this.productosTableModel = model;
-        revalidate();
-        repaint();
-    }
+
     public void actualizarModelo(DefaultTableModel nuevoModelo) {
         productosTableModel = nuevoModelo;
         table1.setModel(productosTableModel);
@@ -58,53 +63,86 @@ public class Productos extends JPanel {
     public String getText() {
         return text;
     }
+
+    private void textField1KeyTyped(KeyEvent e) {
+        // TODO add your code here
+    }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - André Forsyth
+        // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
         scrollPane1 = new JScrollPane();
         table1 = new JTable();
         textField1 = new JTextField();
+        vSpacer1 = new JPanel(null);
         button1 = new JButton();
+        botonRegresar = new JButton();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
-        0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder
-        .BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt.Color.
-        red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.
-        beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.getPropertyName()))throw new RuntimeException();}});
-        setLayout(new FormLayout(
-            "2*(default, $lcgap), default",
-            "2*(default, $lgap), [20dlu,default], $lgap, [15dlu,default], $lgap, default"));
+        setLayout(new GridBagLayout());
+        ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0};
+        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 18, 0, 0, 0};
+        ((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 1.0, 1.0E-4};
+        ((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0E-4};
 
         //======== scrollPane1 ========
         {
             scrollPane1.setViewportView(table1);
         }
-        add(scrollPane1, CC.xy(3, 3));
-        add(textField1, CC.xy(3, 5));
+        add(scrollPane1, new GridBagConstraints(0, 0, 2, 3, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
+
+        //---- textField1 ----
+        textField1.setMinimumSize(new Dimension(49, 20));
+        textField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                textField1KeyTyped(e);
+            }
+        });
+        add(textField1, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
+        add(vSpacer1, new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
 
         //---- button1 ----
         button1.setText("Buscar");
-        button1.setFont(new Font("Inter", Font.BOLD, 18));
+        button1.setFont(new Font("Inter", Font.BOLD, 12));
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 button1MouseClicked(e);
             }
         });
-        add(button1, CC.xy(3, 7));
+        add(button1, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
+
+        //---- botonRegresar ----
+        botonRegresar.setText("Regresar");
+        add(botonRegresar, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     public void setButtonClickListener(ButtonClickListener listener) {
         this.buttonClickListener = listener;
     }
+    public void setButtonClickListenerRegresar(ButtonClickListener listener) {
+        this.buttonClickListenerRegresar = listener;
+    }
+
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - André Forsyth
+    // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
     private JScrollPane scrollPane1;
     private JTable table1;
     private JTextField textField1;
+    private JPanel vSpacer1;
     private JButton button1;
+    private JButton botonRegresar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

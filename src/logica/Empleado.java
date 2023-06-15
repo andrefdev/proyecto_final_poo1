@@ -11,6 +11,15 @@ public class Empleado extends Persona{
         this.sueldo = sueldo;
         this.ruc = ruc;
     }
+
+    public int getSueldo() {
+        return sueldo;
+    }
+
+    public int getRuc() {
+        return ruc;
+    }
+
     public void agregarGerente(){
 
     }

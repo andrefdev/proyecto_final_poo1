@@ -5,6 +5,7 @@
 package gui;
 
 import javax.swing.*;
+import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 
 import java.awt.*;
@@ -21,18 +22,22 @@ public class FramePrincipal extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - André Forsyth
+        // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
 
         //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo.png")).getImage());
+        setMinimumSize(new Dimension(500, 500));
+        setPreferredSize(new Dimension(500, 500));
         var contentPane = getContentPane();
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
+        contentPane.setLayout(new FormLayout(
+            "2*(default), 13*($lcgap, default)",
+            "default, $lgap, default:grow, $lgap, default"));
         pack();
         setLocationRelativeTo(getOwner());
-        createVerticalGlue();
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - André Forsyth
+    // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -3,41 +3,47 @@ JFDML JFormDesigner: "8.1.0.0.283" Java: "17.0.6" encoding: "UTF-8"
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
-		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
-			"$layoutConstraints": "hidemode 3"
-			"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill]"
-			"$rowConstraints": "[][][30:n][][][][][][][][]"
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0:1.0"
+			"$rowSpecs": "baseline:30:1.0, baseline:0:1.0, baseline:0:1.0, baseline:0:1.0, baseline:0:1.0"
+			"$hGap": 7
+			"$vGap": 7
+			"$alignTop": true
+			"$alignLeft": true
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "botonAnadirProducto"
 				"text": "Añadir Producto"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 6 2"
-			} )
+				"preferredSize": new java.awt.Dimension( 136, 80 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button2"
+				name: "botonEditarProducto"
 				"text": "Editar Producto"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 6 4"
+				"preferredSize": new java.awt.Dimension( 132, 80 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 1
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button3"
+				name: "botonEliminarProducto"
 				"text": "Eliminar Producto"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 6 6"
+				"preferredSize": new java.awt.Dimension( 144, 80 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 2
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button4"
+				name: "botonAgregarEmpleado"
 				"text": "Agregar Empleado"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 6 8"
+				"preferredSize": new java.awt.Dimension( 148, 80 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 3
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button5"
+				name: "botonEliminarEmpleado"
 				"text": "Eliminar Empleado"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 6 10"
+				"preferredSize": new java.awt.Dimension( 148, 80 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 4
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 10, 0 )

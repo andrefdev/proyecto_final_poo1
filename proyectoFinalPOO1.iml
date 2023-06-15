@@ -11,5 +11,6 @@
     <orderEntry type="library" name="flatlaf" level="project" />
     <orderEntry type="library" name="postgresql" level="application" />
     <orderEntry type="library" name="MigLayout" level="project" />
+    <orderEntry type="library" name="toedter.jcalendar" level="application" />
   </component>
 </module>

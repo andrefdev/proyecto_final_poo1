@@ -4,115 +4,96 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-			"$columnSpecs": "6, 211:1.0, 6, 0, 6, 211:1.0, 6"
-			"$rowSpecs": "center:5, center:25, center:35, center:25, center:35, center:25, center:35, 0:1.0, 0"
+			"$columnSpecs": "0:1.0, 0:1.0"
+			"$rowSpecs": "0, 0, 0, 0, 0, 0, 0:1.0, 0"
 			"$alignTop": true
 			"$alignLeft": true
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelCategorias"
-				"text": "Categorias"
+				name: "dniLabel"
+				"text": "dni"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "nombreLabel"
+				"text": "nombre"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "dniTextField"
+				"minimumSize": new java.awt.Dimension( 49, 50 )
+				"preferredSize": new java.awt.Dimension( 49, 50 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "nombreTextField"
+				"minimumSize": new java.awt.Dimension( 49, 50 )
+				"preferredSize": new java.awt.Dimension( 49, 50 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 1
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelPrecio"
-				"text": "Precio"
+				name: "sueldoLabel"
+				"text": "sueldo"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 5
-				"gridy": 1
+				"gridy": 2
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "txtFieldCategorias"
-				"minimumSize": new java.awt.Dimension( 49, 50 )
-				"preferredSize": new java.awt.Dimension( 49, 50 )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "rucLabel"
+				"text": "ruc"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 2
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textFieldPrecio"
+				name: "sueldoTextField"
 				"preferredSize": new java.awt.Dimension( 49, 50 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 5
-				"gridy": 2
+				"gridy": 3
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelMarca"
-				"text": "Marca"
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "rucTextField"
+				"preferredSize": new java.awt.Dimension( 49, 50 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelCodigo"
-				"text": "Codigo"
+				name: "fechaNacimientoLabel"
+				"text": "fecha de nacimiento"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 5
-				"gridy": 3
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "txtFieldMarca"
-				"preferredSize": new java.awt.Dimension( 36, 50 )
-				"minimumSize": new java.awt.Dimension( 49, 50 )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
 				"gridy": 4
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "txtFieldCodigo"
-				"preferredSize": new java.awt.Dimension( 49, 50 )
+			add( new FormComponent( "com.toedter.calendar.JCalendar" ) {
+				name: "jcalendar"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 5
-				"gridy": 4
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label3"
-				"text": "Modelo"
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
 				"gridy": 5
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "txtFieldModelo"
-				"preferredSize": new java.awt.Dimension( 49, 50 )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
-				"gridy": 6
+				"gridwidth": 2
 			} )
 			add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 				name: "vSpacer1"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
-				"gridy": 7
-			} )
-			add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-				name: "vSpacer2"
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 5
-				"gridy": 7
+				"gridy": 6
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
-				"text": "Agregar Producto"
-				"preferredSize": new java.awt.Dimension( 144, 70 )
+				name: "botonAnadirEmpleado"
+				"text": "Añadir"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
-				"gridy": 8
+				"gridy": 7
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "botonRegresar"
 				"text": "Regresar"
-				"preferredSize": new java.awt.Dimension( 96, 70 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 5
-				"gridy": 8
+				"gridx": 1
+				"gridy": 7
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 495, 410 )
+			"size": new java.awt.Dimension( 400, 300 )
 		} )
 	}
 }

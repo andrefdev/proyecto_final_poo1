@@ -7,15 +7,13 @@ public class Persona {
     private int dni;
     private LocalDate fechaNacimiento;
 
-
-    public String getNombre() {
-        return nombre;
-    }
-
     public Persona(String nombre, int dni, LocalDate fechaNacimiento) {
         this.nombre = nombre;
         this.dni = dni;
         this.fechaNacimiento = fechaNacimiento;
+    }
+    public String getNombre() {
+        return nombre;
     }
 
     public void setNombre(String nombre) {

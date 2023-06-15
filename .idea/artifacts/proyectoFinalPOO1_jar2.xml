@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact name="proyectoFinalPOO1:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/proyectoFinalPOO1_jar2</output-path>
+    <root id="root">
+      <element id="archive" name="proyectoFinalPOO1.jar">
+        <element id="module-output" name="proyectoFinalPOO1" />
+      </element>
+      <element id="library" level="application" name="postgresql" />
+      <element id="library" level="project" name="MigLayout" />
+      <element id="library" level="application" name="toedter.jcalendar" />
+      <element id="library" level="project" name="flatlaf" />
+      <element id="library" level="project" name="JGoodies Forms" />
+    </root>
+  </artifact>
+</component>

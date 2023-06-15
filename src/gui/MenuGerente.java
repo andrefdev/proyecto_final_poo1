@@ -4,85 +4,141 @@
 
 package gui;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import logica.ButtonClickListener;
 import net.miginfocom.swing.*;
 
 /**
  * @author andre
  */
 public class MenuGerente extends JPanel {
+    private ButtonClickListener buttonClickListenerAnadirProducto;
+    private ButtonClickListener buttonClickListenerAgregarEmpleado;
+    private ButtonClickListener buttonClickListenerEliminarEmpleado;
+    private ButtonClickListener buttonClickListenerEditarProducto;
+    private ButtonClickListener buttonClickListenerEliminarProducto;
     public MenuGerente() {
         initComponents();
+        botonAnadirProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerAnadirProducto != null) {
+                    buttonClickListenerAnadirProducto.onButtonClick();
+                }
+            }
+        });
+        botonAgregarEmpleado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerAgregarEmpleado != null) {
+                    buttonClickListenerAgregarEmpleado.onButtonClick();
+                }
+            }
+        });
+        botonEliminarEmpleado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerEliminarEmpleado != null) {
+                    buttonClickListenerEliminarEmpleado.onButtonClick();
+                }
+            }
+        });
+        botonEditarProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerEditarProducto != null) {
+                    buttonClickListenerEditarProducto.onButtonClick();
+                }
+            }
+        });
+        botonEliminarProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerEliminarProducto != null) {
+                    buttonClickListenerEliminarProducto.onButtonClick();
+                }
+            }
+        });
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - André Forsyth
+        // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
         botonAnadirProducto = new JButton();
-        button2 = new JButton();
-        button3 = new JButton();
-        button4 = new JButton();
-        button5 = new JButton();
+        botonEditarProducto = new JButton();
+        botonEliminarProducto = new JButton();
+        botonAgregarEmpleado = new JButton();
+        botonEliminarEmpleado = new JButton();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new
-        javax . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , javax
-        . swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java
-        . awt .Font ( "D\u0069al\u006fg", java .awt . Font. BOLD ,12 ) ,java . awt
-        . Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .
-        PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062or\u0064er" .
-        equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
-        setLayout(new MigLayout(
-            "hidemode 3",
-            // columns
-            "[fill]" +
-            "[fill]" +
-            "[fill]" +
-            "[fill]" +
-            "[fill]" +
-            "[fill]" +
-            "[fill]",
-            // rows
-            "[]" +
-            "[]" +
-            "[30:n]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]"));
+        setLayout(new GridBagLayout());
+        ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0};
+        ((GridBagLayout)getLayout()).rowHeights = new int[] {37, 0, 0, 0, 0, 0};
+        ((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+        ((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0E-4};
 
         //---- botonAnadirProducto ----
         botonAnadirProducto.setText("A\u00f1adir Producto");
-        add(botonAnadirProducto, "cell 6 2");
+        botonAnadirProducto.setPreferredSize(new Dimension(136, 80));
+        add(botonAnadirProducto, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+            GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
+            new Insets(0, 0, 7, 0), 0, 0));
 
-        //---- button2 ----
-        button2.setText("Editar Producto");
-        add(button2, "cell 6 4");
+        //---- botonEditarProducto ----
+        botonEditarProducto.setText("Editar Producto");
+        botonEditarProducto.setPreferredSize(new Dimension(132, 80));
+        add(botonEditarProducto, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+            GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
+            new Insets(0, 0, 7, 0), 0, 0));
 
-        //---- button3 ----
-        button3.setText("Eliminar Producto");
-        add(button3, "cell 6 6");
+        //---- botonEliminarProducto ----
+        botonEliminarProducto.setText("Eliminar Producto");
+        botonEliminarProducto.setPreferredSize(new Dimension(144, 80));
+        add(botonEliminarProducto, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+            GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
+            new Insets(0, 0, 7, 0), 0, 0));
 
-        //---- button4 ----
-        button4.setText("Agregar Empleado");
-        add(button4, "cell 6 8");
+        //---- botonAgregarEmpleado ----
+        botonAgregarEmpleado.setText("Agregar Empleado");
+        botonAgregarEmpleado.setPreferredSize(new Dimension(148, 80));
+        add(botonAgregarEmpleado, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+            GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
+            new Insets(0, 0, 7, 0), 0, 0));
 
-        //---- button5 ----
-        button5.setText("Eliminar Empleado");
-        add(button5, "cell 6 10");
+        //---- botonEliminarEmpleado ----
+        botonEliminarEmpleado.setText("Eliminar Empleado");
+        botonEliminarEmpleado.setPreferredSize(new Dimension(148, 80));
+        add(botonEliminarEmpleado, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+            GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
+            new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - André Forsyth
+    // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
     private JButton botonAnadirProducto;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JButton button5;
+    private JButton botonEditarProducto;
+    private JButton botonEliminarProducto;
+    private JButton botonAgregarEmpleado;
+    private JButton botonEliminarEmpleado;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+    public void setButtonClickListenerAnadirProducto(ButtonClickListener listener) {
+        this.buttonClickListenerAnadirProducto = listener;
+    }
+    public void setButtonClickListenerAgregarEmpleado(ButtonClickListener listener) {
+        this.buttonClickListenerAgregarEmpleado = listener;
+    }
+    public void setButtonClickListenerEliminarEmpleado(ButtonClickListener listener) {
+        this.buttonClickListenerEliminarEmpleado = listener;
+    }
+    public void setButtonClickListenerEditarProducto(ButtonClickListener listener) {
+        this.buttonClickListenerEditarProducto = listener;
+    }
+    public void setButtonClickListenerEliminarProducto(ButtonClickListener listener) {
+        this.buttonClickListenerEliminarProducto = listener;
+    }
 }

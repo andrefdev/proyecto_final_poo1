@@ -4,6 +4,7 @@ import com.sun.jdi.PrimitiveValue;
 import logica.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -76,7 +77,7 @@ public class BaseDeDatos {
             }
         }
     }
-    private void actualizarEmpleados() {
+    public void actualizarEmpleados() {
         empleados.clear();
         Connection connection = null;
         Statement statement = null;
@@ -104,7 +105,7 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
-    private void actualizarGerentes() {
+    public void actualizarGerentes() {
         gerentes.clear();
         Connection connection = null;
         Statement statement = null;
@@ -132,7 +133,7 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
-    private void actualizarClientes() {
+    public void actualizarClientes() {
         clientes.clear();
         Connection connection = null;
         Statement statement = null;
@@ -159,7 +160,7 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
-    private void actualizarProductos() {
+    public void actualizarProductos() {
         productos.clear();
         Connection connection = null;
         Statement statement = null;
@@ -348,29 +349,26 @@ public class BaseDeDatos {
             actualizarEmpleados();
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-
-            String dniTemp = JOptionPane.showInputDialog("Inserte el dni del empleado a eliminar");
-            while (!validarDni(String.valueOf(dniTemp))) {
-                dniTemp = JOptionPane.showInputDialog("Inserte el dni del empleado a eliminar");
-            }
-             dni = Integer.parseInt(dniTemp);
             Empleado emp = null;
-            if (existeEmpleado(dni)){
-                for (Empleado empleado : empleados)
-                {
-                    if(empleado.getDni() == dni){
-                        emp = empleado;
-                    }
-                }
-                JOptionPane.showConfirmDialog(null, "Seguro de eliminar al empleado: " + emp.toString());
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "No existe ningun empleado con ese dni");
-            }
-            statement = connection.prepareStatement("DELETE FROM empleados WHERE dni = ?");
 
-            statement.setLong(1,dni);
-            statement.executeUpdate();
+            if (validarDni(String.valueOf(dni))) {
+                if (existeEmpleado(dni)){
+                    for (Empleado empleado : empleados)
+                    {
+                        if(empleado.getDni() == dni){
+                            emp = empleado;
+                        }
+                    }
+                    JOptionPane.showConfirmDialog(null, "Seguro de eliminar al empleado: " + emp.toString());
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "No existe ningun empleado con ese dni");
+                }
+                statement = connection.prepareStatement("DELETE FROM empleados WHERE dni = ?");
+
+                statement.setLong(1,dni);
+                statement.executeUpdate();
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -429,26 +427,39 @@ public class BaseDeDatos {
     public void agregarEmpleado(Long dni, String nombre, int sueldo, int ruc, Date fechaNacimiento) {
         Connection connection = null;
         PreparedStatement statement = null;
+        PreparedStatement statement2 = null;
         ResultSet resultSet = null;
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-            statement = connection.prepareStatement("INSERT INTO empleados(dni, nombre, sueldo, ruc, fecha_nacimiento) VALUES (?,?,?,?,?)");
-
-            statement.setLong(1,dni);
-            statement.setString(2,nombre);
-            statement.setInt(3,sueldo);
-            statement.setInt(4,ruc);
-            statement.setDate(5, fechaNacimiento);
-
-            statement.executeUpdate();
+            if(validarDni(String.valueOf(dni)) && validarRuc(String.valueOf(ruc))){
+                statement = connection.prepareStatement("INSERT INTO empleados(dni, nombre, sueldo, ruc, fecha_nacimiento) VALUES (?,?,?,?,?)");
+                statement.setLong(1,dni);
+                statement.setString(2,nombre);
+                statement.setInt(3,sueldo);
+                statement.setInt(4,ruc);
+                statement.setDate(5, fechaNacimiento);
+                statement.executeUpdate();
+                statement2 = connection.prepareStatement("INSERT INTO credenciales(usuario, contrasena, credencial_id_empleado) VALUES (?,?,?)");
+                statement2.setString(1,nombre+"."+ruc);
+                statement2.setString(2, Long.toString(dni));
+                statement2.setLong(3,dni);
+                statement2.executeUpdate();
+                statement2.close();
+                JOptionPane.showMessageDialog(null, "empleado agregado exitosamente");
+            }else{
+                JOptionPane.showMessageDialog(null, "Dni incorrecto");
+            }
         }
-        catch (Exception e){
+        catch (SQLException e){
             e.printStackTrace();
+            JOptionPane.showConfirmDialog(null, "error "+ e.toString());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         } finally {
-            closeResources(connection, statement, resultSet);
+                closeResources(connection, statement, resultSet);
+            }
         }
-    }
     public void agregarGerente(Long dni, String nombre, int sueldo, int ruc, Date fechaNacimiento) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -546,5 +557,180 @@ public class BaseDeDatos {
         actualizarProductos();
         return productos;
     }
+    public List<Empleado> obtenerEmpleados(){
+        actualizarProductos();
+        return empleados;
+    }
+    public DefaultTableModel mostrarEmpleados(){
+        actualizarEmpleados();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Dni");
+        model.addColumn("Nombre");
+        model.addColumn("Sueldo");
+        model.addColumn("Ruc");
+        model.addColumn("Fecha de nacimiento");
 
+        for (Empleado empleado : empleados
+        ) {
+            String dni = String.valueOf(empleado.getDni());
+            String sueldo = String.valueOf(empleado.getSueldo());
+            String ruc = String.valueOf(empleado.getRuc());
+            // Añadir filas de datos
+            model.addRow(new String[]{dni, empleado.getNombre(), sueldo, ruc, empleado.getFechaNacimiento().toString()});
+        }
+        return model;
+    }
+    public void obtenerCredenciales(int dniEmpleado) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT A.dni, A.nombre, A.sueldo, A.ruc, A.fecha_nacimiento, B.credencial_id, B.usuario, B.contrasena FROM empleados AS A INNER JOIN credenciales as B ON A.dni=B.credencial_id_empleado OR A.dni=B.credencial_id_gerente";
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url);
+            statement = connection.prepareStatement(query);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int dni = resultSet.getInt("dni");
+                String nombre = resultSet.getString("nombre");
+                String usuarioCredencial = resultSet.getString("usuario");
+                String contrasena = resultSet.getString("contrasena");
+
+                System.out.println("DNI: " + dni);
+                System.out.println("Nombre: " + nombre);
+                System.out.println("Usuario: " + usuarioCredencial);
+                System.out.println("Contraseña: " + contrasena);
+            } else {
+                System.out.println("No se encontraron credenciales para el empleado con DNI: " + dniEmpleado);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+    }
+    public Empleado obtenerEmpleadoConCredenciales(String usuario, String contrasena) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Empleado emp = null;
+        try {
+            String query = "SELECT A.dni, A.nombre, A.sueldo, A.ruc, A.fecha_nacimiento, B.credencial_id_gerente, B.usuario, B.contrasena FROM empleados AS A INNER JOIN credenciales as B ON A.dni=B.credencial_id_empleado WHERE B.usuario = ? AND B.contrasena = ?";
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url);
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, usuario);
+            statement.setString(2, contrasena);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int dni = resultSet.getInt("dni");
+                String nombre = resultSet.getString("nombre");
+                String usuarioCredencial = resultSet.getString("usuario");
+                String contrasenaTemp = resultSet.getString("contrasena");
+
+                emp = buscarEmpleado(dni);
+            } else {
+                System.out.println("No se encontraron credenciales para el empleado con DNI: ");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+        return emp;
+    }
+    public Boolean existeEmpleadoConCredenciales(String usuario, String contrasena) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT A.dni, A.nombre, A.sueldo, A.ruc, A.fecha_nacimiento, B.credencial_id_gerente, B.usuario, B.contrasena FROM empleados AS A INNER JOIN credenciales as B ON A.dni=B.credencial_id_empleado WHERE B.usuario = ? AND B.contrasena = ?";
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url);
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, usuario);
+            statement.setString(2, contrasena);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+        return false;
+    }
+    public Gerente obtenerGerenteConCredenciales(String usuario, String contrasena) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Gerente ger = null;
+        try {
+            String query = "SELECT A.dni, A.nombre, A.sueldo, A.ruc, A.fecha_nacimiento, B.credencial_id_gerente, B.usuario, B.contrasena FROM gerentes AS A INNER JOIN credenciales as B ON A.dni=B.credencial_id_gerente WHERE B.usuario = ? AND B.contrasena = ?";
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url);
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, usuario);
+            statement.setString(2, contrasena);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int dni = resultSet.getInt("dni");
+                String nombre = resultSet.getString("nombre");
+                String usuarioCredencial = resultSet.getString("usuario");
+                String contrasenaTemp = resultSet.getString("contrasena");
+
+                ger = buscarGerente(dni);
+            } else {
+                System.out.println("No se encontraron credenciales para el gerente con DNI: ");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+        return ger;
+    }
+    public Boolean existeGerenteConCredenciales(String usuario, String contrasena) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT A.dni, A.nombre, A.sueldo, A.ruc, A.fecha_nacimiento, B.credencial_id_gerente, B.usuario, B.contrasena FROM gerentes AS A INNER JOIN credenciales as B ON A.dni=B.credencial_id_gerente WHERE B.usuario = ? AND B.contrasena = ?";
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(url);
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, usuario);
+            statement.setString(2, contrasena);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(connection, statement, resultSet);
+        }
+        return false;
+    }
 }

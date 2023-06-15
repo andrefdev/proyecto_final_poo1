@@ -1,3 +1,6 @@
 Manifest-Version: 1.0
 Main-Class: logica.Main
+Class-Path: postgresql-42.6.0.jar checker-qual-3.31.0.jar miglayout-swin
+ g.jar miglayout-core.jar jcalendar-1.4.jar flatlaf-3.1.1.jar jgoodies-f
+ orms.jar jgoodies-common.jar
 
