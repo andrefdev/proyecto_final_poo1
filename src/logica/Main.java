@@ -33,9 +33,11 @@ public class Main {
 
                 Productos productos = new Productos(model);
                 MenuGerente menuGerente = new MenuGerente();
+                MenuEmpleado menuEmpleado = new MenuEmpleado();
                 AnadirProducto anadirProducto = new AnadirProducto();
                 AgregarEmpleado agregarEmpleado = new AgregarEmpleado();
                 EliminarEmpleado eliminarEmpleado = new EliminarEmpleado();
+
 
                 login.setButtonClickListener(new ButtonClickListener() {
                     @Override
@@ -52,13 +54,29 @@ public class Main {
                             e.printStackTrace();
                         }
                         if(db.existeEmpleadoConCredenciales(usuario, contrasena)){
-                            framePrincipal.setContentPane(productos);
+                            framePrincipal.setContentPane(menuEmpleado);
                             framePrincipal.revalidate();
                             framePrincipal.repaint();
-                            productos.setButtonClickListenerRegresar(new ButtonClickListener() {
+                            menuEmpleado.setButtonClickListenerVerProductos(new ButtonClickListener() {
+                                @Override
+                                public void onButtonClick() {
+                                    framePrincipal.setContentPane(productos);
+                                    framePrincipal.revalidate();
+                                    framePrincipal.repaint();
+                                }
+                            });
+                            menuEmpleado.setButtonClickListenerRegresar(new ButtonClickListener() {
                                 @Override
                                 public void onButtonClick() {
                                     framePrincipal.setContentPane(login);
+                                    framePrincipal.revalidate();
+                                    framePrincipal.repaint();
+                                }
+                            });
+                            productos.setButtonClickListenerRegresar(new ButtonClickListener() {
+                                @Override
+                                public void onButtonClick() {
+                                    framePrincipal.setContentPane(menuEmpleado);
                                     framePrincipal.revalidate();
                                     framePrincipal.repaint();
                                 }
@@ -111,7 +129,8 @@ public class Main {
                             menuGerente.setButtonClickListenerEliminarEmpleado(new ButtonClickListener() {
                                 @Override
                                 public void onButtonClick() {
-                                    eliminarEmpleado.actualizarModelo(modelEmpleados);
+                                    DefaultTableModel modelEmpleado = db.mostrarEmpleados();
+                                    eliminarEmpleado.actualizarModelo(modelEmpleado);
                                     framePrincipal.setContentPane(eliminarEmpleado);
                                     framePrincipal.revalidate();
                                     framePrincipal.repaint();

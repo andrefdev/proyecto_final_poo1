@@ -1,15 +1,16 @@
 <component name="ArtifactManager">
-  <artifact name="proyectoFinalPOO1:jar2">
+  <artifact type="jar" build-on-make="true" name="proyectoFinalPOO1:jar2">
     <output-path>$PROJECT_DIR$/out/artifacts/proyectoFinalPOO1_jar2</output-path>
-    <root id="root">
-      <element id="archive" name="proyectoFinalPOO1.jar">
-        <element id="module-output" name="proyectoFinalPOO1" />
-      </element>
-      <element id="library" level="application" name="postgresql" />
-      <element id="library" level="project" name="MigLayout" />
-      <element id="library" level="application" name="toedter.jcalendar" />
-      <element id="library" level="project" name="flatlaf" />
-      <element id="library" level="project" name="JGoodies Forms" />
+    <root id="archive" name="proyectoFinalPOO1.jar">
+      <element id="module-output" name="proyectoFinalPOO1" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/checkerframework/checker-qual/3.31.0/checker-qual-3.31.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/miglayout-swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/miglayout-core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/toedter/jcalendar/1.4/jcalendar-1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/flatlaf-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jgoodies-forms.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jgoodies-common.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

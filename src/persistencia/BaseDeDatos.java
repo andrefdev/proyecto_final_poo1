@@ -222,8 +222,6 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
-
-
     public Empleado buscarEmpleado(int dni) {
         actualizarEmpleados();
         for (Empleado empleado : empleados
@@ -367,6 +365,7 @@ public class BaseDeDatos {
                 statement = connection.prepareStatement("DELETE FROM empleados WHERE dni = ?");
 
                 statement.setLong(1,dni);
+
                 statement.executeUpdate();
             }
         }

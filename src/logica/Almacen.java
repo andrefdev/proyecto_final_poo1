@@ -26,6 +26,7 @@ public class Almacen {
              ) {
             String precio = String.valueOf(producto.getPrecio());
             String codigo = String.valueOf(producto.getCodigo());
+            System.out.println(producto.toString());
             // Añadir filas de datos
             model.addRow(new String[]{codigo, producto.getCategorias().toString(), producto.getMarca(), producto.getModelo(), precio});
         }
