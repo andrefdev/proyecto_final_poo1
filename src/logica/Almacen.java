@@ -3,9 +3,13 @@ package logica;
 import persistencia.BaseDeDatos;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.sql.Array;
+import javax.swing.table.TableCellEditor;
+import java.awt.*;
+import java.sql.*;
 import java.util.*;
+import java.util.List;
 
 public class Almacen {
     private List<Producto> productos;
@@ -22,62 +26,69 @@ public class Almacen {
 
         };
         model.addColumn("Código");
-        model.addColumn("Categoria");
+        model.addColumn("Categorias");
         model.addColumn("Marca");
         model.addColumn("Modelo");
         model.addColumn("Precio");
+        model.addColumn("Stock");
 
         for (Producto producto : productos
              ) {
             String precio = String.valueOf(producto.getPrecio());
             String codigo = String.valueOf(producto.getCodigo());
+            String stock = String.valueOf(producto.getStock());
             System.out.println(producto.toString());
             // Añadir filas de datos
-            model.addRow(new String[]{codigo, producto.getCategorias().toString(), producto.getMarca(), producto.getModelo(), precio});
+            model.addRow(new String[]{codigo, producto.getCategorias().toString(), producto.getMarca(), producto.getModelo(), precio, stock});
         }
         return model;
     }
     public DefaultTableModel mostrarProductosPorCategoria(String categoria) {
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) {
-                    return Boolean.class; // Establecer la clase de la columna "Seleccionar" como Boolean para que se muestre el checkbox
-                }
-                return super.getColumnClass(columnIndex);
-            }
-            public boolean isCellEditable(int filas, int columnas){
-                return false;
-            }
-        };
+        DefaultTableModel model = new DefaultTableModel();
         productosSorteados = db.obtenerProductosPorCategoria(categoria);
-
-        model.addColumn("Seleccionar");
         model.addColumn("Código");
-        model.addColumn("Categoria");
+        model.addColumn("Categorias");
         model.addColumn("Marca");
         model.addColumn("Modelo");
         model.addColumn("Precio");
+        model.addColumn("Stock");
 
         for (Producto producto : productosSorteados) {
             String precio = String.valueOf(producto.getPrecio());
             String codigo = String.valueOf(producto.getCodigo());
+            String stock = String.valueOf(producto.getStock());
             // Añadir filas de datos
-            Object[] rowData = new Object[]{
-                    false,
+            String[] rowData = new String[]{
                     codigo,
                     producto.getCategorias().toString(),
                     producto.getMarca(),
                     producto.getModelo(),
-                    precio
+                    precio,
+                    stock
             };
             model.addRow(rowData);
         }
+        return model;
+    }
 
-        JTable table = new JTable(model);
-        table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox())); // Establecer el editor de celdas como un checkbox en la columna "Seleccionar"
-        table.getColumnModel().getColumn(0).setCellRenderer(table.getDefaultRenderer(Boolean.class)); // Personalizar el renderizador de la columna "Seleccionar"
+    public DefaultTableModel mostrarProductosParaHacerPedido(String categoria) {
+        productosSorteados = db.obtenerProductosPorCategoria(categoria);
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Cantidad");
+        model.addColumn("Código");
+        model.addColumn("Categorias");
+        model.addColumn("Marca");
+        model.addColumn("Modelo");
+        model.addColumn("Precio");
+        model.addColumn("Stock");
 
+        for (Producto producto : productosSorteados) {
+            int precio = producto.getPrecio();
+            int codigo = producto.getCodigo();
+            int stock = producto.getStock();
+            // Añadir filas de datos
+            model.addRow(new Object[]{0, codigo, producto.getCategorias().toString(), producto.getMarca(), producto.getModelo(), precio, stock});
+        }
         return model;
     }
     public void anadirProducto(ArrayList<String> categorias, String marca, String modelo, int precio, int codigo){
@@ -110,5 +121,77 @@ public class Almacen {
             x = x + producto.toString() + "\n";
         }
         return x;
+    }
+    public void crearPedido(Empleado empleado, int codigo, ArrayList productosArray, int precio, Cliente cliente) throws SQLException {
+        db.agregarPedido(codigo, productosArray, precio, cliente);
+    }
+
+
+    public static double calculateTotalPrice(List<CartItem> items) {
+        double totalPrice = 0.0;
+        for (CartItem item : items) {
+            totalPrice += item.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
+
+    public static class CartItem {
+        private Producto producto;
+        private int quantity;
+        private double totalPrice;
+
+        public CartItem(Producto producto, int quantity, double totalPrice) {
+            this.producto = producto;
+            this.quantity = quantity;
+            this.totalPrice = totalPrice;
+        }
+
+        public Producto getProducto() {
+            return producto;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public double getTotalPrice() {
+            return totalPrice;
+        }
+    }
+
+    public static class SpinnerRenderer extends DefaultTableCellRenderer {
+        private JSpinner spinner;
+
+        public SpinnerRenderer() {
+            spinner = new JSpinner();
+            spinner.setPreferredSize(new Dimension(50, 20));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            spinner.setValue(value);
+            return spinner;
+        }
+    }
+
+    public static class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
+        private JSpinner spinner;
+
+        public SpinnerEditor() {
+            spinner = new JSpinner();
+            spinner.setPreferredSize(new Dimension(50, 20));
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            spinner.setValue(value);
+            return spinner;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
     }
 }

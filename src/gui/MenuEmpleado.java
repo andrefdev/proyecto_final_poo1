@@ -16,6 +16,7 @@ import javax.swing.*;
  */
 public class MenuEmpleado extends JPanel {
     private ButtonClickListener buttonClickListenerVerProductos;
+    private ButtonClickListener buttonClickListenerHacerPedido;
     private ButtonClickListener buttonClickListenerRegresar;
     public MenuEmpleado() {
         initComponents();
@@ -35,6 +36,14 @@ public class MenuEmpleado extends JPanel {
                 }
             }
         });
+        botonCrearPedido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerHacerPedido != null) {
+                    buttonClickListenerHacerPedido.onButtonClick();
+                }
+            }
+        });
     }
 
     private void initComponents() {
@@ -42,7 +51,7 @@ public class MenuEmpleado extends JPanel {
         // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
         botonVerProductos = new JButton();
         vSpacer1 = new JPanel(null);
-        button2 = new JButton();
+        botonCrearPedido = new JButton();
         vSpacer2 = new JPanel(null);
         botonRegresar = new JButton();
 
@@ -63,10 +72,10 @@ public class MenuEmpleado extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //---- button2 ----
-        button2.setText("Crear pedido");
-        button2.setPreferredSize(new Dimension(70, 80));
-        add(button2, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0,
+        //---- botonCrearPedido ----
+        botonCrearPedido.setText("Crear pedido");
+        botonCrearPedido.setPreferredSize(new Dimension(70, 80));
+        add(botonCrearPedido, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
         add(vSpacer2, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0,
@@ -85,7 +94,7 @@ public class MenuEmpleado extends JPanel {
     // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
     private JButton botonVerProductos;
     private JPanel vSpacer1;
-    private JButton button2;
+    private JButton botonCrearPedido;
     private JPanel vSpacer2;
     private JButton botonRegresar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
@@ -94,5 +103,8 @@ public class MenuEmpleado extends JPanel {
     }
     public void setButtonClickListenerRegresar(ButtonClickListener listener) {
         this.buttonClickListenerRegresar = listener;
+    }
+    public void setButtonClickListenerHacerPedido(ButtonClickListener listener) {
+        this.buttonClickListenerHacerPedido = listener;
     }
 }

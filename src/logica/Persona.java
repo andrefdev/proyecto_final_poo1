@@ -1,17 +1,18 @@
 package logica;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Persona {
     private String nombre;
     private int dni;
-    private LocalDate fechaNacimiento;
+    private Date fechaNacimiento;
 
-    public Persona(String nombre, int dni, LocalDate fechaNacimiento) {
+    public Persona(String nombre, int dni, Date fechaNacimiento) {
         this.nombre = nombre;
         this.dni = dni;
         this.fechaNacimiento = fechaNacimiento;
     }
+
     public String getNombre() {
         return nombre;
     }
@@ -28,11 +29,11 @@ public class Persona {
         this.dni = dni;
     }
 
-    public LocalDate getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

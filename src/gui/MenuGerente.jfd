@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "0:1.0"
-			"$rowSpecs": "baseline:30:1.0, baseline:0:1.0, baseline:0:1.0, baseline:0:1.0, baseline:0:1.0"
+			"$rowSpecs": "baseline:30:1.0, baseline:0:1.0, baseline:0:1.0, baseline:0:1.0, 0, 0"
 			"$hGap": 7
 			"$vGap": 7
 			"$alignTop": true
@@ -18,32 +18,38 @@ new FormModel {
 				"preferredSize": new java.awt.Dimension( 136, 80 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "botonEditarProducto"
-				"text": "Editar Producto"
-				"preferredSize": new java.awt.Dimension( 132, 80 )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridy": 1
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "botonEliminarProducto"
 				"text": "Eliminar Producto"
 				"preferredSize": new java.awt.Dimension( 144, 80 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridy": 2
+				"gridy": 1
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "botonAgregarEmpleado"
 				"text": "Agregar Empleado"
 				"preferredSize": new java.awt.Dimension( 148, 80 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridy": 3
+				"gridy": 2
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "botonEliminarEmpleado"
 				"text": "Eliminar Empleado"
 				"preferredSize": new java.awt.Dimension( 148, 80 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "botonReportes"
+				"text": "Reportes"
+				"preferredSize": new java.awt.Dimension( 70, 80 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 4
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "botonRegresar"
+				"text": "Regresar"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 5
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 10, 0 )

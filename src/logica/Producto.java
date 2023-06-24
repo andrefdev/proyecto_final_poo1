@@ -8,13 +8,23 @@ public class Producto {
     private String marca;
     private ArrayList<String> categorias;
     private String modelo;
+    private int stock;
 
-    public Producto(ArrayList<String> categorias, String marca, String modelo, int precio, int codigo) {
+    public Producto(ArrayList<String> categorias, String marca, String modelo, int precio, int codigo, int stock) {
         this.categorias = categorias;
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
         this.codigo = codigo;
+        this.stock = stock;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public int getCodigo() {

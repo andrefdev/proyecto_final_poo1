@@ -1,5 +1,6 @@
 package logica;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 import persistencia.BaseDeDatos;
@@ -7,8 +8,8 @@ import persistencia.BaseDeDatos;
 public class Gerente extends Empleado {
     BaseDeDatos db = new BaseDeDatos();
 
-    public Gerente(int dni, String nombre, int sueldo, int ruc, LocalDate fechaNacimiento) {
-        super(dni, nombre, sueldo, ruc, fechaNacimiento);
+    public Gerente(String nombre, int dni, Date fechaNacimiento, int sueldo, int ruc) {
+        super(nombre, dni, fechaNacimiento, sueldo, ruc);
     }
 
     public void anadirProducto() {

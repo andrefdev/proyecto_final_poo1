@@ -1,6 +1,4 @@
 package persistencia;
-
-import com.sun.jdi.PrimitiveValue;
 import logica.*;
 
 import javax.swing.*;
@@ -8,12 +6,9 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Iterator.*;
-
 public class BaseDeDatos {
     private List<Empleado> empleados = new ArrayList<>();
     private List<Gerente> gerentes = new ArrayList<>();
@@ -98,10 +93,9 @@ public class BaseDeDatos {
                 String nombre = resultSet.getString("nombre");
                 Integer sueldo = resultSet.getInt("sueldo");
                 Integer ruc = resultSet.getInt("ruc");
-                Date fechaTemporal = resultSet.getDate("fecha_nacimiento");
-                LocalDate fechaNacimiento = fechaTemporal.toLocalDate();
+                Date fechaNacimiento = resultSet.getDate("fecha_nacimiento");
 
-                Empleado empleado = new Empleado(dni, nombre, sueldo, ruc, fechaNacimiento);
+                Empleado empleado = new Empleado(nombre, dni, fechaNacimiento, sueldo, ruc);
                 empleados.add(empleado);
             }
         }
@@ -126,10 +120,9 @@ public class BaseDeDatos {
                 String nombre = resultSet.getString("nombre");
                 Integer sueldo = resultSet.getInt("sueldo");
                 Integer ruc = resultSet.getInt("ruc");
-                Date fechaTemporal = resultSet.getDate("fecha_nacimiento");
-                LocalDate fechaNacimiento = fechaTemporal.toLocalDate();
+                Date fechaNacimiento = resultSet.getDate("fecha_nacimiento");
 
-                Gerente gerente = new Gerente(dni, nombre, sueldo, ruc, fechaNacimiento);
+                Gerente gerente = new Gerente(nombre, dni, fechaNacimiento,sueldo, ruc);
                 gerentes.add(gerente);
             }
         }
@@ -153,9 +146,7 @@ public class BaseDeDatos {
                 Integer dni = resultSet.getInt("dni");
                 String nombre = resultSet.getString("nombre");
                 String direccion = resultSet.getString("direccion");
-                Date fechaTemporal = resultSet.getDate("fecha_nacimiento");
-                LocalDate fechaNacimiento = fechaTemporal.toLocalDate();
-
+                Date fechaNacimiento = resultSet.getDate("fecha_nacimiento");
                 Cliente cliente = new Cliente(nombre,dni, fechaNacimiento, direccion);
                 clientes.add(cliente);
             }
@@ -179,6 +170,7 @@ public class BaseDeDatos {
             while (resultSet.next()) { // will traverse through all rows
                 int codigo = resultSet.getInt("codigo");
                 int precio = resultSet.getInt("precio");
+                int stock = resultSet.getInt("stock");
                 String marca = resultSet.getString("marca");
                 Array categoriasArray = resultSet.getArray("categorias");
                 String[] catArray = (String[]) categoriasArray.getArray();
@@ -187,7 +179,7 @@ public class BaseDeDatos {
 
                 String modelo = resultSet.getString("modelo");
 
-                Producto producto = new Producto(categoriasArrayList, marca, modelo, precio, codigo);
+                Producto producto = new Producto(categoriasArrayList, marca, modelo, precio, codigo, stock);
                 productos.add(producto);
             }
         }
@@ -210,6 +202,7 @@ public class BaseDeDatos {
             while (resultSet.next()) { // will traverse through all rows
                 int codigo = resultSet.getInt("codigo");
                 int precio = resultSet.getInt("precio");
+                int stock = resultSet.getInt("stock");
                 String marca = resultSet.getString("marca");
                 Array categoriasArray = resultSet.getArray("categorias");
                 String[] catArray = (String[]) categoriasArray.getArray();
@@ -218,7 +211,7 @@ public class BaseDeDatos {
 
                 String modelo = resultSet.getString("modelo");
 
-                Producto producto = new Producto(categoriasArrayList, marca, modelo, precio, codigo);
+                Producto producto = new Producto(categoriasArrayList, marca, modelo, precio, codigo, stock);
                 productos.add(producto);
             }
         }
@@ -533,7 +526,6 @@ public class BaseDeDatos {
             connection = DriverManager.getConnection(url);
             if(validarDni(String.valueOf(dni))) {
                 statement = connection.prepareStatement("INSERT INTO clientes(dni, nombre, fecha_nacimiento, direccion ) VALUES (?,?,?,?)");
-
                 statement.setInt(1, dni);
                 statement.setString(2, nombre);
                 statement.setDate(3, fechaNacimiento);
@@ -549,23 +541,35 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
-    public void agregarPedido(int codigo, Array productosArray, int precio, Cliente cliente ) {
+    public void agregarPedido(int codigo, ArrayList<Producto> productos, int precio, Cliente cliente) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        ArrayList<String> categorias = new ArrayList<String>();
+
+        ArrayList<String> arrayProductos = new ArrayList<>();
+        for (Producto producto : productos
+             ) {
+            arrayProductos.add(producto.getModelo());
+        }
+        String[] arrayStringProductos = arrayProductos.toArray(new String[arrayProductos.size()]);
+
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url);
-            if(validarCodigo(String.valueOf(codigo)) && validarPrecio(String.valueOf(precio))) {
-                statement = connection.prepareStatement("INSERT INTO productos(codigo, productos , precio, cliente) VALUES (?,?,?,?)");
-                statement.setInt(1, codigo);
-                statement.setArray(2, productosArray);
-                statement.setInt(3, precio);
-                statement.setString(4, cliente.toString());
+            statement = connection.prepareStatement("INSERT INTO pedidos(productos , precio, cliente, fecha) VALUES (?,?,?,?)");
+            Date fechaPedido = Date.valueOf(LocalDate.now());
+            //statement.setInt(1, codigo);
+            if(validarDni(String.valueOf(cliente.getDni()))){
+                String nombreCliente = cliente.getNombre();
+                Array sqlArray = connection.createArrayOf("VARCHAR", arrayStringProductos);
+                statement.setArray(1, sqlArray);
+                statement.setInt(2, precio);
+                statement.setString(3, nombreCliente);
+                statement.setDate(4, fechaPedido);
                 statement.executeUpdate();
-            }else{
-                JOptionPane.showMessageDialog(null, "codigo o precio incorrecto");
+                JOptionPane.showMessageDialog(null, "pedidio agregado exitosamente");
+            }else {
+                JOptionPane.showMessageDialog(null, "el dni debe tener 8 caracteres");
             }
         }
         catch (Exception e){

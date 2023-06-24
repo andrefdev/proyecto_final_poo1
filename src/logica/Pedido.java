@@ -19,4 +19,18 @@ public class Pedido {
     public int getCodigo() {
         return codigo;
     }
+
+    public ArrayList<Producto> getProductos() {
+        return productos;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "codigo=" + codigo +
+                ", productos=" + productos +
+                ", precio=" + precio +
+                ", cliente=" + cliente +
+                '}';
+    }
 }

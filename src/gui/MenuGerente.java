@@ -19,8 +19,10 @@ public class MenuGerente extends JPanel {
     private ButtonClickListener buttonClickListenerAnadirProducto;
     private ButtonClickListener buttonClickListenerAgregarEmpleado;
     private ButtonClickListener buttonClickListenerEliminarEmpleado;
-    private ButtonClickListener buttonClickListenerEditarProducto;
     private ButtonClickListener buttonClickListenerEliminarProducto;
+    private ButtonClickListener buttonClickListenerReportes;
+    private ButtonClickListener buttonClickListenerRegresar;
+
     public MenuGerente() {
         initComponents();
         botonAnadirProducto.addActionListener(new ActionListener() {
@@ -28,6 +30,14 @@ public class MenuGerente extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (buttonClickListenerAnadirProducto != null) {
                     buttonClickListenerAnadirProducto.onButtonClick();
+                }
+            }
+        });
+        botonEliminarProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerEliminarProducto != null) {
+                    buttonClickListenerEliminarProducto.onButtonClick();
                 }
             }
         });
@@ -47,11 +57,11 @@ public class MenuGerente extends JPanel {
                 }
             }
         });
-        botonEditarProducto.addActionListener(new ActionListener() {
+        botonRegresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (buttonClickListenerEditarProducto != null) {
-                    buttonClickListenerEditarProducto.onButtonClick();
+                if (buttonClickListenerRegresar != null) {
+                    buttonClickListenerRegresar.onButtonClick();
                 }
             }
         });
@@ -60,6 +70,14 @@ public class MenuGerente extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (buttonClickListenerEliminarProducto != null) {
                     buttonClickListenerEliminarProducto.onButtonClick();
+                }
+            }
+        });
+        botonReportes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerReportes != null) {
+                    buttonClickListenerReportes.onButtonClick();
                 }
             }
         });
@@ -73,13 +91,15 @@ public class MenuGerente extends JPanel {
         botonEliminarProducto = new JButton();
         botonAgregarEmpleado = new JButton();
         botonEliminarEmpleado = new JButton();
+        botonReportes = new JButton();
+        botonRegresar = new JButton();
 
         //======== this ========
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0};
-        ((GridBagLayout)getLayout()).rowHeights = new int[] {37, 0, 0, 0, 0, 0};
+        ((GridBagLayout)getLayout()).rowHeights = new int[] {37, 0, 0, 0, 0, 0, 0};
         ((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
-        ((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0E-4};
+        ((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0E-4};
 
         //---- botonAnadirProducto ----
         botonAnadirProducto.setText("A\u00f1adir Producto");
@@ -88,32 +108,38 @@ public class MenuGerente extends JPanel {
             GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
             new Insets(0, 0, 7, 0), 0, 0));
 
-        //---- botonEditarProducto ----
-        botonEditarProducto.setText("Editar Producto");
-        botonEditarProducto.setPreferredSize(new Dimension(132, 80));
-        add(botonEditarProducto, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-            GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
-            new Insets(0, 0, 7, 0), 0, 0));
-
         //---- botonEliminarProducto ----
         botonEliminarProducto.setText("Eliminar Producto");
         botonEliminarProducto.setPreferredSize(new Dimension(144, 80));
-        add(botonEliminarProducto, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+        add(botonEliminarProducto, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
             GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
             new Insets(0, 0, 7, 0), 0, 0));
 
         //---- botonAgregarEmpleado ----
         botonAgregarEmpleado.setText("Agregar Empleado");
         botonAgregarEmpleado.setPreferredSize(new Dimension(148, 80));
-        add(botonAgregarEmpleado, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+        add(botonAgregarEmpleado, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
             new Insets(0, 0, 7, 0), 0, 0));
 
         //---- botonEliminarEmpleado ----
         botonEliminarEmpleado.setText("Eliminar Empleado");
         botonEliminarEmpleado.setPreferredSize(new Dimension(148, 80));
-        add(botonEliminarEmpleado, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+        add(botonEliminarEmpleado, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.BASELINE, GridBagConstraints.HORIZONTAL,
+            new Insets(0, 0, 7, 0), 0, 0));
+
+        //---- botonReportes ----
+        botonReportes.setText("Reportes");
+        botonReportes.setPreferredSize(new Dimension(70, 80));
+        add(botonReportes, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 7, 0), 0, 0));
+
+        //---- botonRegresar ----
+        botonRegresar.setText("Regresar");
+        add(botonRegresar, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
@@ -125,6 +151,8 @@ public class MenuGerente extends JPanel {
     private JButton botonEliminarProducto;
     private JButton botonAgregarEmpleado;
     private JButton botonEliminarEmpleado;
+    private JButton botonReportes;
+    private JButton botonRegresar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
     public void setButtonClickListenerAnadirProducto(ButtonClickListener listener) {
         this.buttonClickListenerAnadirProducto = listener;
@@ -135,10 +163,13 @@ public class MenuGerente extends JPanel {
     public void setButtonClickListenerEliminarEmpleado(ButtonClickListener listener) {
         this.buttonClickListenerEliminarEmpleado = listener;
     }
-    public void setButtonClickListenerEditarProducto(ButtonClickListener listener) {
-        this.buttonClickListenerEditarProducto = listener;
+    public void setButtonClickListenerRegresar(ButtonClickListener listener) {
+        this.buttonClickListenerRegresar = listener;
     }
     public void setButtonClickListenerEliminarProducto(ButtonClickListener listener) {
         this.buttonClickListenerEliminarProducto = listener;
+    }
+    public void setButtonClickListenerReportes(ButtonClickListener listener) {
+        this.buttonClickListenerReportes = listener;
     }
 }

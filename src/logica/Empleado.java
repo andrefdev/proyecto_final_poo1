@@ -1,12 +1,16 @@
 package logica;
 
+import java.sql.Array;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Empleado extends Persona{
     private int sueldo;
     private int ruc;
 
-    public Empleado(int dni, String nombre, int sueldo, int ruc, LocalDate fechaNacimiento) {
+    public Empleado(String nombre, int dni, Date fechaNacimiento, int sueldo, int ruc) {
         super(nombre, dni, fechaNacimiento);
         this.sueldo = sueldo;
         this.ruc = ruc;
@@ -23,8 +27,13 @@ public class Empleado extends Persona{
     public void agregarGerente(){
 
     }
-    public void prepararPedido(){
-
+    public void realizarPedido(Almacen almacen, int codigo, ArrayList<Producto> productos, int precio, Cliente c){
+        try {
+            almacen.crearPedido(this, codigo, productos, precio, c);
+            System.out.println(this.toString());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

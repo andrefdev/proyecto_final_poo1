@@ -24,7 +24,7 @@ new FormModel {
 				"gridwidth": 2
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button2"
+				name: "botonCrearPedido"
 				"text": "Crear pedido"
 				"preferredSize": new java.awt.Dimension( 70, 80 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
