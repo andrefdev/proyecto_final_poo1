@@ -113,6 +113,7 @@ public class AsignadorEventListeners {
         menuGerente.setButtonClickListenerReportes(new ButtonClickListener() {
             @Override
             public void onButtonClick() {
+                reportes.setModel(db.mostrarPedidos());
                 framePrincipal.actualizarFrame(reportes);
             }
         });
@@ -266,7 +267,7 @@ public class AsignadorEventListeners {
             }
         });
     }
-    private void asignarEventListenerLogin(){
+    private static void asignarEventListenerLogin(){
         login.setButtonClickListener(new ButtonClickListener() {
             @Override
             public void onButtonClick() {
@@ -293,8 +294,6 @@ public class AsignadorEventListeners {
                     framePrincipal.revalidate();
                     framePrincipal.repaint();
                 }
-                System.out.println(empleado.toString());
-                System.out.println(gerente.toString());
             }
         });
 
@@ -318,6 +317,14 @@ public class AsignadorEventListeners {
                 framePrincipal.setContentPane(menuGerente);
                 framePrincipal.revalidate();
                 framePrincipal.repaint();
+            }
+        });
+    }
+    private static void asignarEventListenerReportes(){
+        reportes.setButtonCLickListenerRegresar(new ButtonClickListener() {
+            @Override
+            public void onButtonClick() {
+                framePrincipal.actualizarFrame(menuGerente);
             }
         });
     }

@@ -30,7 +30,6 @@ public class Empleado extends Persona{
     public void realizarPedido(Almacen almacen, int codigo, ArrayList<Producto> productos, int precio, Cliente c){
         try {
             almacen.crearPedido(this, codigo, productos, precio, c);
-            System.out.println(this.toString());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -20,6 +20,18 @@ public class Pedido {
         return codigo;
     }
 
+    public int getPrecio() {
+        return precio;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
     public ArrayList<Producto> getProductos() {
         return productos;
     }

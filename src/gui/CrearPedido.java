@@ -139,7 +139,7 @@ public class CrearPedido extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //---- botonConfrimarPedido ----
+        //---- botonConfirmarPedido ----
         botonConfirmarPedido.setText("Confirmar pedido");
         botonConfirmarPedido.setFont(new Font("Inter", Font.BOLD, 12));
         botonConfirmarPedido.addMouseListener(new MouseAdapter() {

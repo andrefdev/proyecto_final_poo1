@@ -1,4 +1,6 @@
 package persistencia;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import logica.*;
 
 import javax.swing.*;
@@ -6,9 +8,11 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.google.gson.Gson;
 public class BaseDeDatos {
     private List<Empleado> empleados = new ArrayList<>();
     private List<Gerente> gerentes = new ArrayList<>();
@@ -194,25 +198,35 @@ public class BaseDeDatos {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
+
         try {
             connection = DriverManager.getConnection(url);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("select * from pedidos");
-            List<String> categoriasList = null;
             while (resultSet.next()) { // will traverse through all rows
-                int codigo = resultSet.getInt("codigo");
+                Array productosArray = resultSet.getArray("productos");
+                Object[] jsonValues = (Object[]) productosArray.getArray();
+
                 int precio = resultSet.getInt("precio");
-                int stock = resultSet.getInt("stock");
-                String marca = resultSet.getString("marca");
-                Array categoriasArray = resultSet.getArray("categorias");
-                String[] catArray = (String[]) categoriasArray.getArray();
-                categoriasList = Arrays.asList(catArray);
-                ArrayList<String> categoriasArrayList = new ArrayList<>(categoriasList);
 
-                String modelo = resultSet.getString("modelo");
+                String nombre = resultSet.getString("cliente");
+                Cliente cli = buscarClienteNombre(nombre);
+                Date fechaPedido = resultSet.getDate("fecha");
 
-                Producto producto = new Producto(categoriasArrayList, marca, modelo, precio, codigo, stock);
-                productos.add(producto);
+
+                String productosString = jsonValues.toString();
+                Gson gson = new Gson();
+                // Deserializar los productos y guardarlos en una lista
+                ArrayList<Producto> productos = new ArrayList<>();
+                JsonArray productosJsonArray = gson.fromJson(productosString, JsonArray.class);
+
+                for (JsonElement elemento : productosJsonArray) {
+                    Producto producto = gson.fromJson(elemento.getAsJsonArray(), Producto.class);
+                    productos.add(producto);
+                }
+
+                Pedido pedido = new Pedido(productos,precio,cli,fechaPedido);
+                pedidos.add(pedido);
             }
         }
         catch (Exception e){
@@ -221,6 +235,8 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
+
+
     public Empleado buscarEmpleado(int dni) {
         actualizarEmpleados();
         for (Empleado empleado : empleados
@@ -545,13 +561,14 @@ public class BaseDeDatos {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
+        Gson gson = new Gson();
 
-        ArrayList<String> arrayProductos = new ArrayList<>();
+        ArrayList<String> productosJason = new ArrayList<>();
         for (Producto producto : productos
              ) {
-            arrayProductos.add(producto.getModelo());
+            productosJason.add(gson.toJson(producto));
         }
-        String[] arrayStringProductos = arrayProductos.toArray(new String[arrayProductos.size()]);
+        String[] arrayStringProductos = productosJason.toArray(new String[productosJason.size()]);
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -561,7 +578,7 @@ public class BaseDeDatos {
             //statement.setInt(1, codigo);
             if(validarDni(String.valueOf(cliente.getDni()))){
                 String nombreCliente = cliente.getNombre();
-                Array sqlArray = connection.createArrayOf("VARCHAR", arrayStringProductos);
+                Array sqlArray = connection.createArrayOf("jsonb", arrayStringProductos);
                 statement.setArray(1, sqlArray);
                 statement.setInt(2, precio);
                 statement.setString(3, nombreCliente);
@@ -578,6 +595,7 @@ public class BaseDeDatos {
             closeResources(connection, statement, resultSet);
         }
     }
+
     public List<Producto> obtenerProductos(){
         actualizarProductos();
         return productos;
@@ -602,6 +620,23 @@ public class BaseDeDatos {
             String ruc = String.valueOf(empleado.getRuc());
             // Añadir filas de datos
             model.addRow(new String[]{dni, empleado.getNombre(), sueldo, ruc, empleado.getFechaNacimiento().toString()});
+        }
+        return model;
+    }
+    public DefaultTableModel mostrarPedidos(){
+        actualizarPedidos();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Productos");
+        model.addColumn("Precio");
+        model.addColumn("Cliente");
+        model.addColumn("Fecha de pedido");
+
+        for (Pedido pedido : pedidos) {
+            ArrayList productos = pedido.getProductos();
+            int precio = pedido.getPrecio();
+            Cliente c = pedido.getCliente();
+            Date date = pedido.getFecha();
+            model.addRow(new String[]{productos.toString(), String.valueOf(precio), c.toString(), date.toString()});
         }
         return model;
     }

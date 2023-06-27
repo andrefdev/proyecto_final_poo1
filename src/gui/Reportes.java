@@ -4,24 +4,42 @@
 
 package gui;
 
+import logica.ButtonClickListener;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author andre
  */
 public class Reportes extends JPanel {
+    private ButtonClickListener buttonClickListenerRegresar;
+    private DefaultTableModel pedidosModelo;
     public Reportes() {
         initComponents();
+        botonRegresar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonClickListenerRegresar != null) {
+                    buttonClickListenerRegresar.onButtonClick();
+                }
+            }
+        });
     }
-
+    public void setModel(DefaultTableModel model){
+        pedidosModelo = model;
+        table1.setModel(pedidosModelo);
+    }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Educational license - Ricardo Reaño (André Forsyth)
         menuBar1 = new JMenuBar();
         scrollPane1 = new JScrollPane();
         table1 = new JTable();
-        button1 = new JButton();
+        botonRegresar = new JButton();
 
         //======== this ========
         setLayout(new GridBagLayout());
@@ -41,9 +59,9 @@ public class Reportes extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //---- button1 ----
-        button1.setText("Regresar");
-        add(button1, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+        //---- botonRegresar ----
+        botonRegresar.setText("Regresar");
+        add(botonRegresar, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -54,6 +72,9 @@ public class Reportes extends JPanel {
     private JMenuBar menuBar1;
     private JScrollPane scrollPane1;
     private JTable table1;
-    private JButton button1;
+    private JButton botonRegresar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+    public void setButtonCLickListenerRegresar(ButtonClickListener listener) {
+        this.buttonClickListenerRegresar = listener;
+    }
 }
